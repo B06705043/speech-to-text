@@ -1,0 +1,36 @@
+
+google : Exception: google cannot recognize!
+ibm : {'result_index': 0, 'results': [{'final': True, 'alternatives': [{'transcript': 'for ', 'confidence': 0.51}]}]}
+wit : hey portal
+houndify : for the spring by bus
+
+google : I know you from the boat
+ibm : {'result_index': 0, 'results': [{'final': True, 'alternatives': [{'transcript': 'for the full ', 'confidence': 0.58}]}]}
+wit : two point four
+houndify : i know two from the boat
+
+google : Panda poop
+ibm : {'result_index': 0, 'results': [{'final': True, 'alternatives': [{'transcript': 'for ', 'confidence': 0.59}]}]}
+wit : Exception: wit cannot recognize!
+houndify : know what you think of the group
+
+google : give me a water
+ibm : {'result_index': 0, 'results': [{'final': True, 'alternatives': [{'transcript': 'for ', 'confidence': 0.77}]}]}
+wit : hey portal whatsapp
+houndify : please me a water
+
+google : hey I know you
+ibm : {'result_index': 0, 'results': [{'final': True, 'alternatives': [{'transcript': 'Hey ', 'confidence': 0.25}]}, {'final': True, 'alternatives': [{'transcript': 'hi to ', 'confidence': 0.61}]}]}
+wit : hey portal go to
+houndify : hey i know you
+
+google : blue 5S
+ibm : {'result_index': 0, 'results': [{'final': True, 'alternatives': [{'transcript': 'for ', 'confidence': 0.39}]}]}
+wit : the first
+houndify : bye first
+
+google : I Need Your Love
+ibm : {'result_index': 0, 'results': [{'final': True, 'alternatives': [{'transcript': 'for sure hello ', 'confidence': 0.48}]}]}
+wit : no
+houndify : i need your love
+
