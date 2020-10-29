@@ -148,6 +148,7 @@ class RecordingFile(Listener):
                 print(google_result)
 
             #用try寫不出來
+            #會回傳一大堆參數回來
             from ibm_watson import SpeechToTextV1
             from ibm_cloud_sdk_core.authenticators import IAMAuthenticator
 
@@ -160,6 +161,7 @@ class RecordingFile(Listener):
                 audio=audio_file,content_type="audio/wav"
                 ).get_result()
                 print("ibm : ",ibm_result['results'][0]['alternatives'][0]['transcript'])
+                ibm_results_buffer = ibm_result['results'][0]
 
             try:
                 #在網頁裡面改語言
@@ -190,11 +192,11 @@ class RecordingFile(Listener):
                 print(houndify_result)
                 
             print("-------------------------------")
-            results = [google_result, ibm_result, wit_result, houndify_result]
+            results = [google_result, ibm_results_buffer ['alternatives'][0]['transcript'], wit_result, houndify_result]
             return results
 
     def write_text(self, results):
-        text_file = open("speech_content.txt", "a")
+        text_file = open("speech_content.json", "w")
         text_file.write("google : %s\n" % results[0])
         text_file.write("ibm : %s\n" % results[1])
         text_file.write("wit : %s\n" % results[2])
