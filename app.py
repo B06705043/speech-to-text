@@ -7,26 +7,26 @@ import globalvar as gl
 import weight #deprecated
 import use_reasoner
 from decimal import Decimal
+from flask_cors import CORS, cross_origin
+from flask_socketio import SocketIO
 
 os.chdir(os.path.dirname(os.path.realpath(__file__)))
 
-#weight = gl.get_value("weight")
-#threshold = gl.get_value("threshold")
+weight = gl.get_value("weight")
+threshold = gl.get_value("threshold")
 
 app = Flask(__name__)
+CORS(app, support_credentials=True)
+socketio = SocketIO(app, cors_allowed_origins='*')
 
 @app.route('/')
 @app.route('/index.html')
 def index():
 	return render_template('index.html')
 
-@app.route('/reasoner_page.html')
-def reasoner_page():
-	return render_template('reasoner_page.html')
-
 @app.route('/upload', methods=['POST'])
 def upload():
-	fname = request.form.get('fname')
+	fname = 'record.wav'
 	blob = request.form.get('data')[22:]
 
 	decode_blob = safe_base64_decode(blob)
