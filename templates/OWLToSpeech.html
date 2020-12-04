@@ -1,0 +1,105 @@
+{% extends "base.html" %}
+{% block title %}OWL to Speech{% endblock title %}
+{% block content %}	
+	<div class="row">
+		<div class="col">
+			<div id="inputpart">
+				<label for="story">Please upload the OWL file:</label>
+				<input type="file" name="owlfile" id="story"><br>
+				<button id="ota" onclick="uploadowl();">OWL to ACE</button>
+			</div>
+		</div>
+		<div class="col">
+			<div id="textpart">
+				<textarea id="text" cols="60" rows="20">Waiting for the input....</textarea><br>
+				<button id="ATS" onclick="uploadText();">Text to Speech</button>
+				<button id="reset" onclick="resettext();">Reset</button>
+			</div>
+			<div align="left">
+				<audio id="audio" controls>
+					<source id="audio_source" src="#" type="audio/mpeg">
+				</audio>
+			</div>
+		</div>
+	</div>
+{% endblock content %}
+{% block scripts %}
+<script>
+	var fname=[];
+	function uploadowl(){
+		var story = document.getElementById("story").files[0];
+		var output = document.getElementById("text").value;
+		if( story != ''  && output != ''){
+			var filename=(new Date().toISOString()).replace(/:/g,"_");
+			fname.push(filename);
+			var output_text=document.getElementById("text");
+			output_text.innerHTML="Reasoning...";
+		}
+
+		var up= new FormData();
+		up.append('filename',filename);
+		up.append('story',story);
+		$.ajax({
+			type: 'POST',
+			url: '/savetxt',
+			data: up,
+			processData: false,
+			contentType: false
+		}).done(function(data){
+			result = document.getElementById("text");
+			console.log(data['result']);
+			if(data['result'] == 'True'){
+				result.innerHTML = 'Yes.';
+			}
+			else if(data['result'] == 'False'){
+				result.innerHTML = 'False.';
+			}
+			else{
+				result.innerHTML = data['result'];
+			}
+		}).fail(function(jQXHR,textStatus,error){
+			console.log('Upload failed');
+		});
+	}
+
+	function uploadText(){
+		var text=document.getElementById("text").value;
+		var up =new FormData();
+		var filename=new Date().getTime();
+		up.append('voice','female2');
+		up.append('text',text);
+		up.append('filename',filename);
+		console.log(filename);
+		console.log(text);
+		$.ajax({
+			type: 'POST',
+			url: '/TTSapi',
+			data: up,
+			processData: false,
+			contentType: false	
+		}).done(function(data){
+		file=data['filename']+'.mp3';
+		console.log(file);
+		console.log("Text to Speech upload successful!");
+		document.getElementById("audio_source").src="";
+		document.getElementById("audio_source").src="../static/"+file;
+		var aud = document.getElementById("audio");
+		aud.load();
+		aud.play();
+		if(data['result'] == true){
+			console.log("TTS successfully!!!");
+		}
+		else 
+			console.log("TTS Failed");
+
+		}).fail(function(jqXHR,textStatus,error){
+			console.log("Upload text failed!");
+		});
+		}
+
+		function resettext(){
+			localStorage.clear();
+			window.location.reload();
+		}
+</script>
+{% endblock scripts %}

@@ -9,11 +9,13 @@ ape = 'ape'
 owl_to_ace = 'owl_to_ace'
 demo_class = 'Demo'
 
+debug = True
+
 ape_command = lambda filename: [ape, '-file', filename, '-solo', 'owlxml']
 owl_to_ace_command = lambda filename: [owl_to_ace, '-xml', filename]
 
 plat = platform.system()
-exe_tail = '.exe' if plat == 'Windows' else ''
+exe_tail = '.exe'
 
 if not os.path.exists(reasoner):
 	print("Cannot find reasoner.")
@@ -45,11 +47,14 @@ def run(storypath, querypath):
 		 demo_class,
 		 'e',
 		 os.path.abspath(f'{storypath}.owl'),
-		 os.path.abspath(f'{querypath}.owl')], capture_output = True, shell = True)
+		 os.path.abspath(f'{querypath}.owl')], capture_output = True, shell = (True if plat == 'Windows' else False))
 	#print(result.stdout)
+	if not debug:
+		os.remove(f'{storypath}.owl')
+		os.remove(f'{querypath}.owl')
 	if b'true' in result.stdout:
 		return 'True'
 	elif b'false' in result.stdout:
 		return 'False'
 	else:
-		return 'None'
+		return result.stdout.decode()
